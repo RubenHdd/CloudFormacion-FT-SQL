@@ -1,59 +1,48 @@
-/*
-LIKE: se utiliza en la instrucción WHERE para buscar en un patrón variable
-- %cadena%: busca un patron al principio, al final, o a mitad de un texto
-- %cadena: busca un patron que comience por la cadena indicada
-- cadena%: busca un patrón que termine por la cadena indicada 
-*/
-SELECT * FROM sakila.customer where first_name LIKE '%SAM%';
-SELECT * FROM sakila.customer where first_name LIKE 'SA%';
-SELECT * FROM sakila.customer where first_name LIKE '%SA';
+-- IN: limitamos los valores filtrados en el WHERE para adecuarlo a un listado de valores
+SELECT * FROM sakila.payment where customer_id IN (1,7,9);
 
-/*
-NOT: permite añadirse a una sentencia para indicar negación
-*/
-SELECT * FROM sakila.city where NOT city = "Santiago de Compostela";
-SELECT * FROM sakila.city where NOT country_id = 87;
-SELECT * FROM sakila.customer where NOT first_name LIKE '%SAM%';
+SELECT * FROM sakila.actor 
+where first_name IN ('JENNIFER', 'JULIA');
 
-/*
-AND/OR: instrucciones que permiten añadir clausulas a las condiciones
-*/
-SELECT * FROM sakila.city WHERE city LIKE 'S%';
-SELECT * FROM sakila.city WHERE country_id = 87;
+-- BETWEEN: encuentra resultados comprendidos entre dos valores, un valor mínimo y uno máximo
+SELECT * from sakila.payment where customer_id BETWEEN 3 AND 5;
 
-SELECT * FROM sakila.city WHERE city LIKE 'S%' and country_id = 87;
-SELECT * FROM sakila.city WHERE city LIKE 'S%' OR country_id = 87;
+SELECT * from sakila.payment where amount BETWEEN 6 AND 10;
 
-/*
-LIMIT: limitar la cantidad de registros mostrados
-*/
-select * from sakila.city limit 10;
-SELECT * FROM sakila.city WHERE city LIKE 'S%' OR country_id = 87 limit 100;
+-- Alias de columna: renombrar una columna especifica
+select * from sakila.actor;
 
-/*
-MIN/MAX: obtiene los números máximos y mínimos almacenados en una tabla
-*/
+Select
+actor_id,
+first_name as 'Nombre',
+last_name as 'Apellido'
+from sakila.actor;
+
+-- CONCAT: encadena valores de columna
+Select CONCAT(first_name, last_name) FROM sakila.actor;
+Select CONCAT( first_name,' ', last_name) FROM sakila.actor;
+Select CONCAT('Nombre: ', first_name,', Apellidos: ', last_name) FROM sakila.actor;
+Select CONCAT('Nombre: ', first_name,', Apellidos: ', last_name) as 'Nombre Completo' FROM sakila.actor;
+
+-- GROUP BY: agrupa filas que tienen mismos valores
+SELECT * FROM sakila.payment;
+SELECT * from sakila.payment GROUP BY staff_id;
+
+SELECT  staff_id, sum(amount) from sakila.payment GROUP BY staff_id;
+SELECT  staff_id, count(*) from sakila.payment GROUP BY staff_id;
+SELECT  staff_id, count(*) as Pagos, sum(amount) as Ventas from sakila.payment GROUP BY staff_id;
+SELECT  staff_id, count(*) as Pagos, sum(amount) as Ventas from sakila.payment where staff_id = 1 GROUP BY staff_id;
+
+
+-- CASE: nos permite crear una nueva columna en base a condiciones
 SELECT * FROM sakila.payment;
 
-SELECT MAX(amount) FROM sakila.payment;
-SELECT MIN(amount) FROM sakila.payment;
-
-SELECT MAX(amount), customer_id FROM sakila.payment;
-
-/*
-COUNT: cuenta los registros de una tabla
-*/
-SELECT COUNT(*) from sakila.payment;
-SELECT COUNT(*) from sakila.payment where customer_id = 2;
-
-/*
-AVG: realiza el promedio de los registros de una tabla
-*/
-SELECT AVG(amount) from sakila.payment;
-SELECT AVG(amount) from sakila.payment where customer_id = 2;
-
-/*
-SUM: realiza el promedio de los registros de una tabla
-*/
-SELECT SUM(amount) from sakila.payment;
-SELECT SUM(amount) from sakila.payment where customer_id = 2;
+SELECT 
+	payment_id,
+    amount,
+    case 
+		when amount < 5 then 'Producto estándar'
+        else 'Producto premium'
+	end as "TipoProducto"
+from sakila.payment;
+        
