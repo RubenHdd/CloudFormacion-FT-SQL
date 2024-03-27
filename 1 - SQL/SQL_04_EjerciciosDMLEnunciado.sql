@@ -37,4 +37,8 @@
 -- Tabla: sakila.address
 -- Pregunta: Direcciones de ontario o de punjab o que su código postal acabe en 5 o que su teléfono acabe en 5
 
+-- Tabla: sakila.film
+-- Pregunta: Si la duración de la pelicula está entre 80 y 120, clasificar como 'Larga duración', entre 60 y 80 como 'Estandar y en caso contrario 'Otros'
 
+-- Tabla: sakila.actor
+-- Pregunta: Actores que se llamen 'Scarlett' o 'Julia'
