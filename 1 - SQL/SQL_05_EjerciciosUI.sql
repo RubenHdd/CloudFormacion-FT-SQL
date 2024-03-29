@@ -24,4 +24,5 @@ b. La tabla Clientes debe contener las siguientes columnas:
 
 Asegúrate de que los campos de identificador (id) en ambas tablas sean claves primarias y se autoincrementen para garantizar la unicidad y la facilidad de inserción de datos.
 
+PRUEBA A INSERTAR ALGUNOS DATOS DE PRUEBA
 */
